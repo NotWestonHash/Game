@@ -115,18 +115,7 @@ class Ball(pygame.sprite.Sprite):
 		pygame.draw.circle(self.image,self.color,(self.radius,self.radius),self.radius)
 		self.rect = self.image.get_rect(center = (self.x, self.y))
 	
-	def jump(self,viy):
-		while self.jump_count < 10:
-			print("AAAAAH")
-			self.x+=self.vx
-			if self.vx<0:
-				self.vx+=1
-			elif self.vx>0:
-				self.vx-=1
-			self.vy=viy-self.jump_count
-			self.y += self.vy
-			self.rect.centery = self.y
-			self.jump_count += 1
+		
 
 		
 	def gravity(self): # this needs to be updated to stop on heads
@@ -237,31 +226,23 @@ while True:
 	if pygame.sprite.spritecollide(b,land,False):
 		b.jump_count=0
 		b.fall_count=0
-		b.jump(b.vy)
-		print("gROUNd")
 	if b.rect.colliderect(p.rect):
-		if p.jump_count<20:
-			b.jump_count=0
-			b.fall_count=0
-			b.vy+=20-p.jump_count
-			b.jump(b.vy)
+		if p.direction=="right":
+			b.rect.centerx+=20
+			b.rect.centery-=10
 		else:
-			b.jump_count=0
-			b.fall_count=0
-			b.jump(b.vy)
+			b.rect.centerx-=20
+			b.rect.centery-=10
 	if b.rect.colliderect(player.rect):
-		if player.jump_count<20:
-			b.jump_count=0
-			b.fall_count=0
-			b.vy+=20-player.jump_count
-			b.jump(b.vy)
+		if player.direction=="right":
+			b.rect.centerx+=20
+			b.rect.centery-=10
 		else:
-			b.jump_count=0
-			b.fall_count=0
-			b.jump(b.vy)
+			b.rect.centerx-=20
+			b.rect.centery-=10
 	else:
 		b.gravity()
-		print("AIR")
+
 			
     # Blits all surfaces to screen
 	all_sprites.draw(screen)
